@@ -1,4 +1,5 @@
 #![no_std] // disable linking into the standard library
+#![no_main] // tell the rust compiler to not use the normal entry point
 
 use core::panic::PanicInfo;
 
@@ -10,6 +11,10 @@ fn panic(_info: &PanicInfo) -> !{
 }
 
 
-fn main() {
+// here we're defining our own entry point
+#[no_mangle]
+pub extern "C" fn _start() -> !{
+    loop {
 
+    }
 }
