@@ -3,6 +3,14 @@ name = "rusty_os"
 version = "0.1.0"
 edition = "2021"
 
+# set the panic strategy to abort both for dev and release profile
+# usiong this to avoid the eh_personality language item (even though i have no idea what this is)
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
