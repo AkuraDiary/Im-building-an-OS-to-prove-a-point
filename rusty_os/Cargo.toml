@@ -5,6 +5,11 @@ name = "rusty_os"
 version = "0.1.0"
 edition = "2024"
 
+
+[[test]]
+name = "should_panic"
+harness = false
+
 # set the panic strategy to abort both for dev and release profile
 # usiong this to avoid the eh_personality language item (even though I have no idea what this is)
 #[profile.dev]
