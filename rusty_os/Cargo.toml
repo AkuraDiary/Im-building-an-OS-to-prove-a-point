@@ -16,7 +16,6 @@ edition = "2024"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-
 bootloader = "0.9"# for some reason(I honestly don't know) if I update this to the latest version, it won't build
 # also apple arm 64 is not supported yet
 volatile = "0.2.6"# because I use a tutorial reference, the newest version is not compatible with it (I'll figure it out in the future)
@@ -38,7 +37,7 @@ features = ["spin_no_std"]
 build-command = ["build"]
 run-command = ["qemu-system-x86_64", "-drive", "format=raw,file=target/x86_64-rusty_os/debug/bootimage-rusty_os.bin"]
 test-args = [
-    "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04", "-serial", "stdio",
-
+    "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04", "-serial", "stdio", "-display", "none"
 ]
+test-success-exit-code = 33         # (0x10 << 1) | 1
 

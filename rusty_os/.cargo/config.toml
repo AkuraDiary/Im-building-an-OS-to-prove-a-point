@@ -1,11 +1,11 @@
 [unstable]
 build-std-features = ["compiler-builtins-mem"]
 build-std = ["core", "compiler_builtins"]
+#
 
-[test]
-name = "should_panic"
-harness = false
-
+#[[test]]
+#name = "should_panic"
+#harness = false
 
 [build]
 target = "x86_64-rusty_os.json"
