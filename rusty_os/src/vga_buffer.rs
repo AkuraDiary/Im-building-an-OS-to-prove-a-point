@@ -3,6 +3,17 @@ use lazy_static::lazy_static;
 use spin::Mutex;
 use volatile::Volatile;
 
+
+// Global interface for writter to access it without carrying the instance around
+lazy_static! {
+    pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
+        column_position: 0,
+        color_code: ColorCode::new(Color::White, Color::Black),
+        buffer: unsafe { &mut *(0xb8000 as *mut Buffer) }
+    });
+}
+
+
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u8)]
@@ -117,14 +128,7 @@ impl Writer {
         }
     }
 }
-// Global interface for writter to access it without carrying the instance around
-lazy_static! {
-    pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
-        column_position: 0,
-        color_code: ColorCode::new(Color::White, Color::Black),
-        buffer: unsafe { &mut *(0xb8000 as *mut Buffer) }
-    });
-}
+
 
 // Macro exports
 #[macro_export]

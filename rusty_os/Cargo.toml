@@ -1,15 +1,17 @@
+cargo-features = ["edition2024"]
+
 [package]
 name = "rusty_os"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 # set the panic strategy to abort both for dev and release profile
 # usiong this to avoid the eh_personality language item (even though I have no idea what this is)
-[profile.dev]
-panic = "abort"
+#[profile.dev]
+#panic = "abort"
 
-[profile.release]
-panic = "abort"
+#[profile.release]
+#panic = "abort"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -19,9 +21,13 @@ bootloader = "0.9"# for some reason(I honestly don't know) if I update this to t
 # also apple arm 64 is not supported yet
 volatile = "0.2.6"# because I use a tutorial reference, the newest version is not compatible with it (I'll figure it out in the future)
 spin = "0.5.2"
+x86_64 = "0.14.2"
+uart_16550 = "0.2.0"
+
 [dependencies.lazy_static]
 version = "1.0"
 features = ["spin_no_std"]
+
 
 
 
@@ -31,5 +37,8 @@ features = ["spin_no_std"]
 # For building using the `cargo-xbuild` crate, set this to `xbuild`.
 build-command = ["build"]
 run-command = ["qemu-system-x86_64", "-drive", "format=raw,file=target/x86_64-rusty_os/debug/bootimage-rusty_os.bin"]
+test-args = [
+    "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04", "-serial", "stdio",
 
+]
 
