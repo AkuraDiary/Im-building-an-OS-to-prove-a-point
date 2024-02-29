@@ -3,14 +3,6 @@
 
 use core::panic::PanicInfo;
 
-
-#[panic_handler]
-fn panic(_info: &PanicInfo) -> !{
-    loop {
-    }
-}
-
-
 // here we're defining our own entry point
 
 /*
@@ -20,7 +12,7 @@ really outputs a function with the name _start.
 Without the attribute, the compiler would generate some cryptic _ZN3blog_os4_start7hb173fedf945531caE
 */
 
-static HELLO: &[u8] = b"Hello World";
+static HELLO: &[u8] = b"Hello World!";
 #[no_mangle]
 pub extern "C" fn _start() -> !{
     let vga_buffer = 0xb800 as *mut u8;
@@ -31,6 +23,13 @@ pub extern "C" fn _start() -> !{
         }
     }
 
+    loop {
+    }
+}
+
+
+#[panic_handler]
+fn panic(_info: &PanicInfo) -> !{
     loop {
     }
 }

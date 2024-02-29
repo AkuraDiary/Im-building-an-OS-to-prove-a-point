@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 # set the panic strategy to abort both for dev and release profile
-# usiong this to avoid the eh_personality language item (even though i have no idea what this is)
+# usiong this to avoid the eh_personality language item (even though I have no idea what this is)
 [profile.dev]
 panic = "abort"
 
@@ -15,7 +15,16 @@ panic = "abort"
 
 [dependencies]
 
-bootloader = "0.9"# for some reasong if i update this to the latest version, it won't build
+bootloader = "0.9"# for some reasong if I update this to the latest version, it won't build
 # also apple arm 64 is not supported
+
+
+
+[package.metadata.bootimage]
+# The cargo subcommand that will be used for building the kernel.
+#
+# For building using the `cargo-xbuild` crate, set this to `xbuild`.
+build-command = ["build"]
+run-command = ["qemu-system-x86_64", "-drive", "format=raw,file=target/x86_64-rusty_os/debug/bootimage-rusty_os.bin"]
 
 
