@@ -34,14 +34,12 @@ impl ColorCode {
         ColorCode((background as u8) << 4 | (foreground as u8))
     }
 }
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(C)]
 struct ScreenChar {
     ascii_character: u8,
     color_code: ColorCode,
 }
-
 const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
 
@@ -50,7 +48,7 @@ struct Buffer {
     chars: [[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_HEIGHT],
 }
 
-struct Writer {
+pub struct Writer {
     column_position: usize,
     color_code: ColorCode,
     buffer: &'static mut Buffer,
@@ -79,7 +77,7 @@ impl Writer {
         match byte {
             b'\n' => self.new_line(),
             byte => {
-                if (self.column_position >= BUFFER_WIDTH) {
+                if self.column_position >= BUFFER_WIDTH {
                     self.new_line();
                 }
 
@@ -99,7 +97,7 @@ impl Writer {
 
     fn new_line(&mut self) {
         for row in 1..BUFFER_HEIGHT {
-            for col in 1..BUFFER_WIDTH {
+            for col in 0..BUFFER_WIDTH {
                 let character = self.buffer.chars[row][col].read();
                 self.buffer.chars[row - 1][col].write(character);
             }
@@ -121,9 +119,27 @@ impl Writer {
 }
 // Global interface for writter to access it without carrying the instance around
 lazy_static! {
-    pub static ref WRITER: Writer = Mutex::new(Writer {
+    pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         column_position: 0,
-        color_code: ColorCode::new(Color::Green, Color::Black),
+        color_code: ColorCode::new(Color::White, Color::Black),
         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) }
     });
+}
+
+// Macro exports
+#[macro_export]
+macro_rules! print {
+    ($($arg:tt)*) => ($crate::vga_buffer::_print(format_args!($($arg)*)));
+}
+
+#[macro_export]
+macro_rules!  println {
+    () => { $crate::print!("\n")};
+    ($($arg:tt)*) => { $crate::print!("{}\n", format_args!($($arg)*))};
+}
+
+#[doc(hidden)]
+pub fn _print(args: fmt::Arguments) {
+    use core::fmt::Write;
+    WRITER.lock().write_fmt(args).unwrap();
 }
