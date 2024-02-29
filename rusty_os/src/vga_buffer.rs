@@ -95,17 +95,19 @@ impl Writer {
         // TODO
     }
 
-    pub fn print_something(){
-        let mut writer = Writer{
-            column_position: 0,
-            color_code: ColorCode::new(Color::Cyan, Color::Black),
-            buffer: unsafe {&mut *(0xb8000 as *mut Buffer)}
-        };
+}
 
-        writer.write_byte(b'H');
-        writer.write_string("ello ");
-        writer.write_string("World!");
+pub fn print_something(){
+    let mut writer = Writer{
+        column_position: 0,
+        color_code: ColorCode::new(Color::Green, Color::Black),
+        buffer: unsafe {&mut *(0xb8000 as *mut Buffer)}
+    };
 
-    }
+    writer.write_byte(b'H');
+    writer.write_string("ello ");
+    writer.write_string("World! ");
+    writer.write_byte(b'\n');
+    writer.write_string("I'm Building An OS To Prove a Point");
 
 }
