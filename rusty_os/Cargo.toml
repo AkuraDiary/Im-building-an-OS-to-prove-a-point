@@ -15,4 +15,7 @@ panic = "abort"
 
 [dependencies]
 
-bootloader = "0.11.7"
+bootloader = "0.9"# for some reasong if i update this to the latest version, it won't build
+# also apple arm 64 is not supported
+
+
