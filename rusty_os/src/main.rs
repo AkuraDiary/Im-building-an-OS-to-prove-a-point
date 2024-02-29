@@ -5,8 +5,6 @@
 #![reexport_test_harness_main = "test_main"]
 
 use rusty_os::println;
-use rusty_os::QemuExitCode;
-use rusty_os::serial_println;
 use core::panic::PanicInfo;
 
 #[no_mangle]
